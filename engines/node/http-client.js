@@ -49,7 +49,7 @@ exports.request = function(originalRequest){
 	// No timeout is used on the client stream, but we do destroy the stream if a timeout is reached.
 	var timeout = setTimeout(function(){
 		timedOut = true;
-		client.destroy();
+		req.destroy();
 		deferred.reject(new Error("Timeout"));
 	}, request.timeout);
 
@@ -90,7 +90,7 @@ exports.request = function(originalRequest){
 		response.on("end", function(){
 			bodyDeferred.resolve();
 			// Since we have no connection pooling, let's not pretend to use Keep-Alive
-			client.end();
+			req.end();
 		});
 		deferred.resolve(response);
 		clearTimeout(timeout);
